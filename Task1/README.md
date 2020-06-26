@@ -1,22 +1,22 @@
-### Task2
-The input is a long set of integers. Provide a working code that will find all the pairs (in this set) that sum up to 13. Each pair in the output should have first number not greater than the second one and lines should be sorted in an ascending order.
-
-Sample:
-
-For the input:
-
+### Task1
+TThe input is a long set of integers. Please write a small app that will output the list of distinct elements sorted in ascending order, plus the basic measurement information that contains the number of elements in the source, number of distinct elements, min and max value.
+ 
+ Sample:
+ 
+ For the input:
 ```
-1 2 10 7 5 3 6 6 13 0
+1 10 20 20 2 5
 
 ```
 
 expected output is:
 
 ```
-0 13
-3 10
-6 7
-6 7
+1 2 5 10 20
+count: 6
+distinct: 5
+min: 1
+max: 20
 ```
 
 
@@ -33,11 +33,11 @@ mvn package
 ```
 then go to the target directory which contains the built application. To run the applications use the command: 
 ```shell
-java -jar .\Task2-1.0.jar -f <path to file>
+java -jar .\Task1-1.0.jar -f <path to file>
 ```
 contents of the test.txt file:
 ```
-1 2 10 7 5 3 6 6 13 0
+1 10 20 20 2 5
 
 ```
 
