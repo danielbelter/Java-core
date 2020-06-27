@@ -1,19 +1,22 @@
 ### Task1
-The first line of input contains a positive number n, next n lines contains pairs of positive integers, where each pair identifies a connection between two vertices in a graph. Please provide a working code that will give us the answer for the following questions: how many separated graphs are in the input.
-
-Sample:
+TThe input is a long set of integers. Please write a small app that will output the list of distinct elements sorted in ascending order, plus the basic measurement information that contains the number of elements in the source, number of distinct elements, min and max value.
+ 
+ Sample:
+ 
+ For the input:
 ```
-3
-1 2
-2 3
-5 6
+1 10 20 20 2 5
 
 ```
 
 expected output is:
 
 ```
-2
+1 2 5 10 20
+count: 6
+distinct: 5
+min: 1
+max: 20
 ```
 
 
@@ -30,7 +33,7 @@ mvn package
 ```
 then go to the target directory which contains the built application. To run the applications use the command: 
 ```shell
-java -jar .\Task3-1.0.jar -f <path to file>
+java -jar .\Task1-1.0.jar -f <path to file>
 ```
 contents of the test.txt file:
 ```
