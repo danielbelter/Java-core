@@ -14,11 +14,24 @@ public class ApplicationService {
 
     public void countGraph(List<Node> dataSet) {
         int graphs = 1;
-        for (int i = 0; i < dataSet.size() - 1; i++) {
-            if (dataSet.get(i + 1) != null) {
-                if (!dataSet.get(i).getSecondValue().equals(dataSet.get(i + 1).getFirstValue())) {
-                    graphs++;
+        for (int i = 0; i <= dataSet.size() - 1; i++) {
+            int temp1 = 0;
+            int temp2 = 0;
+            int firstValue = dataSet.get(i).getFirstValue();
+            int secondValue = dataSet.get(i).getSecondValue();
+
+            for (Node n : dataSet) {
+
+                if (n.getFirstValue().equals(firstValue) || n.getFirstValue().equals(secondValue)) {
+                    temp1++;
                 }
+                if (n.getSecondValue().equals(secondValue) || n.getSecondValue().equals(firstValue)) {
+                    temp2++;
+                }
+
+            }
+            if (temp1 == 1 && temp2 == 1) {
+                graphs++;
             }
         }
         System.out.println(graphs);
