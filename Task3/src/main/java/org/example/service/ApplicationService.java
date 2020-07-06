@@ -2,58 +2,42 @@ package org.example.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.example.model.Node;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ApplicationService {
 
 
-    public void countGraph(List<Node> dataSet) {
-        int graphs = 1;
-        for (int i = 0; i <= dataSet.size() - 1; i++) {
-            int temp1 = 0;
-            int temp2 = 0;
-            int firstValue = dataSet.get(i).getFirstValue();
-            int secondValue = dataSet.get(i).getSecondValue();
-
-            for (Node n : dataSet) {
-
-                if (n.getFirstValue().equals(firstValue) || n.getFirstValue().equals(secondValue)) {
-                    temp1++;
-                }
-                if (n.getSecondValue().equals(secondValue) || n.getSecondValue().equals(firstValue)) {
-                    temp2++;
-                }
-
-            }
-            if (temp1 == 1 && temp2 == 1) {
-                graphs++;
-            }
-        }
-        System.out.println(graphs);
+    public void countGraph(Graph<String, DefaultEdge> graph) {
+        ConnectivityInspector<String, DefaultEdge> inspector = new ConnectivityInspector(graph);
+        System.out.println(inspector.connectedSets().stream().count());
     }
 
-    public List<Node> readFile(String filePath) throws IOException {
+    public Graph<String, DefaultEdge> readFile(String filePath) throws IOException {
         LineIterator it = null;
-        List<Node> nodes = new ArrayList<>();
+        Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
         try {
             it = FileUtils.lineIterator(new File(filePath), "UTF-8");
             while (it.hasNext()) {
                 String line = it.nextLine();
                 String[] r = line.split(" ");
                 if (r.length == 2) {
-                    nodes.add(new Node(Integer.parseInt(r[0]), Integer.parseInt(r[1])));
+                    graph.addVertex(r[0]);
+                    graph.addVertex(r[1]);
+                    graph.addEdge(r[0], r[1]);
                 }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             it.close();
         }
-        return nodes;
+        return graph;
     }
 }
