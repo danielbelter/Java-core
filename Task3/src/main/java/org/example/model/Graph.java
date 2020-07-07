@@ -6,7 +6,7 @@ public class Graph {
     private Map<Integer, List<Integer>> adjVertices;
 
     public Graph() {
-        this.adjVertices = new HashMap<Integer, List<Integer>>();
+        this.adjVertices = new LinkedHashMap<Integer, List<Integer>>();
     }
 
     public void addVertex(int vertex) {
