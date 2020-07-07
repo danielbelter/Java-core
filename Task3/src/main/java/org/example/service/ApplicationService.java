@@ -2,51 +2,48 @@ package org.example.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.example.model.Graph;
 import org.example.model.Node;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ApplicationService {
+    public static Graph graph = null;
 
-
-    public void countGraph(List<Node> dataSet) {
-        int graphs = 1;
-        for (int i = 0; i <= dataSet.size() - 1; i++) {
-            int temp1 = 0;
-            int temp2 = 0;
-            int firstValue = dataSet.get(i).getFirstValue();
-            int secondValue = dataSet.get(i).getSecondValue();
-
-            for (Node n : dataSet) {
-
-                if (n.getFirstValue().equals(firstValue) || n.getFirstValue().equals(secondValue)) {
-                    temp1++;
-                }
-                if (n.getSecondValue().equals(secondValue) || n.getSecondValue().equals(firstValue)) {
-                    temp2++;
-                }
-
+    void DFSUtil(int idx) {
+        Node n = graph.nodeArray.get(idx);
+        n.visited = true;
+        for (int x : n.vertics) {
+            int index = graph.nodeArray.indexOf(graph.nodeArray.stream().filter(a -> a.val == x).findFirst().get());
+            if (!graph.nodeArray.get(index).visited) {
+                DFSUtil(index);
             }
-            if (temp1 == 1 && temp2 == 1) {
+        }
+    }
+    
+    public void countGraph(Graph graph) {
+        ApplicationService.graph = graph;
+        int graphs = 0;
+        for (int v = 0; v < graph.nodeArray.size(); ++v) {
+            if (!graph.nodeArray.get(v).visited) {
+                DFSUtil(v);
                 graphs++;
             }
         }
         System.out.println(graphs);
     }
 
-    public List<Node> readFile(String filePath) throws IOException {
+    public Graph readFile(String filePath) throws IOException {
         LineIterator it = null;
-        List<Node> nodes = new ArrayList<>();
+        Graph graph = new Graph();
         try {
             it = FileUtils.lineIterator(new File(filePath), "UTF-8");
             while (it.hasNext()) {
                 String line = it.nextLine();
                 String[] r = line.split(" ");
                 if (r.length == 2) {
-                    nodes.add(new Node(Integer.parseInt(r[0]), Integer.parseInt(r[1])));
+                    graph.addEdge(Integer.parseInt(r[0]), Integer.parseInt(r[1]));
                 }
             }
         } catch (IOException e) {
@@ -54,6 +51,6 @@ public class ApplicationService {
         } finally {
             it.close();
         }
-        return nodes;
+        return graph;
     }
 }
