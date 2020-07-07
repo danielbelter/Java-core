@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class App {
     @Parameter(names = {"--file", "-f"})
-    String fileName = "F:\\download\\Java-core\\Task3\\target\\data.txt";
+    String fileName = null;
 
     public static void main(String... argv) {
         App main = new App();
