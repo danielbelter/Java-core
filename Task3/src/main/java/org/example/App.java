@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class App {
     @Parameter(names = {"--file", "-f"})
-    String fileName = null;
+    String fileName = "F:\\download\\Java-core\\Task3\\target\\data.txt";
 
     public static void main(String... argv) {
         App main = new App();
@@ -29,7 +29,6 @@ public class App {
             try {
                 data = applicationService.readFile(fileName);
                 applicationService.countGraph(data);
-                System.out.println(applicationService.graphs);
             } catch (IOException e) {
                 e.printStackTrace();
             }
