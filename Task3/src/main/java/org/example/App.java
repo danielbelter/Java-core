@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class App {
     @Parameter(names = {"--file", "-f"})
-    String fileName = null;
+    String fileName;
 
     public static void main(String... argv) {
         App main = new App();
