@@ -2,51 +2,52 @@ package org.example.service;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.example.model.Node;
+import org.example.model.Graph;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ApplicationService {
+    public static int graphs = 0;
+    static boolean[] isVisited = null;
 
-
-    public void countGraph(List<Node> dataSet) {
-        int graphs = 1;
-        for (int i = 0; i <= dataSet.size() - 1; i++) {
-            int temp1 = 0;
-            int temp2 = 0;
-            int firstValue = dataSet.get(i).getFirstValue();
-            int secondValue = dataSet.get(i).getSecondValue();
-
-            for (Node n : dataSet) {
-
-                if (n.getFirstValue().equals(firstValue) || n.getFirstValue().equals(secondValue)) {
-                    temp1++;
-                }
-                if (n.getSecondValue().equals(secondValue) || n.getSecondValue().equals(firstValue)) {
-                    temp2++;
-                }
-
-            }
-            if (temp1 == 1 && temp2 == 1) {
-                graphs++;
+    public static void dfs(Graph g, int v) {
+        isVisited[v] = true;
+        if (g.getAdjVertices().get(v) != null) {
+            for (int dest : g.getAdjVertices().get(v)) {
+                if (!isVisited[dest])
+                    dfs(g, dest);
             }
         }
-        System.out.println(graphs);
     }
 
-    public List<Node> readFile(String filePath) throws IOException {
+    public void countGraph(Graph graph) {
+        isVisited = new boolean[1000];
+        for (int i = 0; i <= graph.getAdjVertices().keySet().size(); i++) {
+            isVisited[i] = false;
+        }
+        for (int vertex : graph.getAdjVertices().keySet()) {
+            if (graph.getAdjVertices().get(vertex) != null) {
+                if (!isVisited[vertex]) {
+                    dfs(graph, vertex);
+                    graphs++;
+                }
+            }
+        }
+    }
+
+    public Graph readFile(String filePath) throws IOException {
         LineIterator it = null;
-        List<Node> nodes = new ArrayList<>();
+        Graph graph = new Graph();
         try {
             it = FileUtils.lineIterator(new File(filePath), "UTF-8");
             while (it.hasNext()) {
                 String line = it.nextLine();
                 String[] r = line.split(" ");
                 if (r.length == 2) {
-                    nodes.add(new Node(Integer.parseInt(r[0]), Integer.parseInt(r[1])));
+                    graph.addVertex(Integer.parseInt(r[0]));
+                    graph.addVertex(Integer.parseInt(r[1]));
+                    graph.addEdge(Integer.parseInt(r[0]), Integer.parseInt(r[1]));
                 }
             }
         } catch (IOException e) {
@@ -54,6 +55,6 @@ public class ApplicationService {
         } finally {
             it.close();
         }
-        return nodes;
+        return graph;
     }
 }
